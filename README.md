@@ -16,11 +16,11 @@ Add this in your root build.gradle at the end of repositories:
 
 ```groovy
 allprojects {
-	repositories {
-	...
-	maven { url 'https://jitpack.io' }
-		}
-	}
+    repositories {
+        ...
+       maven { url 'https://jitpack.io' }
+    }
+}
 ```
 Add this to dependencies:
 
