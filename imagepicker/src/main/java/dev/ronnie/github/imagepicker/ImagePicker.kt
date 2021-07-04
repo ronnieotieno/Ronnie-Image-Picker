@@ -72,7 +72,7 @@ class ImagePicker(private var activity: AppCompatActivity) : SendImageUri {
                     launchGallery()
                 }
 
-                else -> imageResult.onFailure("Storage Permission denied");
+                else -> imageResult.onFailure("Storage Permission denied")
 
             }
         }
