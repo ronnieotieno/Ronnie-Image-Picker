@@ -37,7 +37,7 @@ Example in code, Kotlin:
   val imagePicker = ImagePicker(this)
   
   //fragment
-   val imagePicker = ImagePicker(requreActivity())
+   val imagePicker = ImagePicker(requireActivity())
 
     //Camera
             imagePicker.takeFromCamera(object : ImageResult {
