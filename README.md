@@ -37,8 +37,7 @@ Example in code:
   //fragment
    val imagePicker = ImagePicker(requreActivity())
 
-        openCameraBtn.setOnClickListener {
-
+    //Camera
             imagePicker.takeFromCamera(object : ImageResult {
                 override fun onFailure(reason: String) {
                     Toast.makeText(this@MainActivity, reason, Toast.LENGTH_LONG).show()
@@ -48,9 +47,8 @@ Example in code:
                     imageView.setImageURI(uri)
                 }
             })
-        }
-        openGalleryBtn.setOnClickListener {
-
+     
+     //Gallery
             imagePicker.pickFromStorage(object : ImageResult {
                 override fun onFailure(reason: String) {
                     Toast.makeText(this@MainActivity, reason, Toast.LENGTH_LONG).show()
@@ -60,5 +58,5 @@ Example in code:
                     imageView.setImageURI(uri)
                 }
             })
-        }
+        
 ```
