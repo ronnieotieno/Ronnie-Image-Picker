@@ -6,7 +6,7 @@ Min Api Level: 16
 
 Build System : [Gradle](https://gradle.org/)
 
-Latest release [![](https://jitpack.io/v/ronnieotieno/Ronnie-Image-Picker.svg)](https://jitpack.io/#ronnieotieno/Ronnie-Image-Picker)
+ [![](https://jitpack.io/v/ronnieotieno/Ronnie-Image-Picker.svg)](https://jitpack.io/#ronnieotieno/Ronnie-Image-Picker)
 
 ## Getting started
 
@@ -14,24 +14,24 @@ You don't need to declare the permissions in the manifests.
 
 Add this in your root build.gradle at the end of repositories:
 
-```
+```groovy
 allprojects {
-		repositories {
-			...
-			maven { url 'https://jitpack.io' }
+	repositories {
+	...
+	maven { url 'https://jitpack.io' }
 		}
 	}
 ```
 Add this to dependencies:
 
-```
+```groovy
 dependencies {
-	        implementation 'com.github.ronnieotieno:Ronnie-Image-Picker:0.2.0' //Add latest version
+	     implementation 'com.github.ronnieotieno:Ronnie-Image-Picker:0.2.0' //Add latest version
 	}
 ```
 Example in code:
 
-```
+```kotlin
  //activity
   val imagePicker = ImagePicker(this)
   //fragment
