@@ -29,18 +29,20 @@ dependencies {
 	     implementation 'com.github.ronnieotieno:Ronnie-Image-Picker:0.2.0' //Add latest version
 	}
 ```
-Example in code:
+Example in code, Kotlin:
 
 ```kotlin
+
  //activity
   val imagePicker = ImagePicker(this)
+  
   //fragment
    val imagePicker = ImagePicker(requreActivity())
 
     //Camera
             imagePicker.takeFromCamera(object : ImageResult {
                 override fun onFailure(reason: String) {
-                    Toast.makeText(this@MainActivity, reason, Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, reason, Toast.LENGTH_LONG).show()
                 }
 
                 override fun onSuccess(uri: Uri) {
@@ -51,7 +53,7 @@ Example in code:
      //Gallery
             imagePicker.pickFromStorage(object : ImageResult {
                 override fun onFailure(reason: String) {
-                    Toast.makeText(this@MainActivity, reason, Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, reason, Toast.LENGTH_LONG).show()
                 }
 
                 override fun onSuccess(uri: Uri) {
@@ -59,4 +61,41 @@ Example in code:
                 }
             })
         
+```
+Example in code,Java:
+
+```java
+
+ //activity
+ ImagePicker imagePicker = new ImagePicker(this);
+ 
+ //fragment
+ ImagePicker imagePicker = new ImagePicker(requireActivity());
+       
+       //Gallery
+       imagePicker.pickFromStorage(new ImageResult() {
+           @Override
+           public void onSuccess(@NotNull Uri uri) {
+               imageView.setImageURI(uri);
+           }
+
+           @Override
+           public void onFailure(@NotNull String s) {
+
+           }
+       });
+       
+       //Camera
+       imagePicker.takeFromCamera(new ImageResult() {
+           @Override
+           public void onSuccess(@NotNull Uri uri) {
+               imageView.setImageURI(uri);
+           }
+
+           @Override
+           public void onFailure(@NotNull String s) {
+
+           }
+       });
+
 ```
