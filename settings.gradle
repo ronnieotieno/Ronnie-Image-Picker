@@ -1,0 +1,3 @@
+rootProject.name = "ImagePickerLib"
+include ':app'
+include ':imagepicker'
