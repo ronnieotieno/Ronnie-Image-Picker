@@ -1,6 +1,6 @@
 # Ronnie-Image-Picker
 
-Makes your work easier by asking for permissions at runtime and take images either from the camera or pick from the gallery. Returns uri for the images taken or picked.
+Asks for Camera and storage permission and return uri of the images taken or picked from the gallery.
 
 Min Api Level: 16
 
