@@ -108,7 +108,7 @@ class ImagePicker(private var activity: AppCompatActivity) : SendImageUri {
         try {
             val takenImageFile = File(activity.externalCacheDir, "takenImage.jpg")
             takenImageUri = FileProvider.getUriForFile(
-                activity, activity.packageName + ".fileprovider", takenImageFile
+                activity, activity.packageName.plus(".ronnie_image_provider"), takenImageFile
             )
             cameraLauncher!!.launch(takenImageUri)
         } catch (exception: Exception) {
