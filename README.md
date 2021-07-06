@@ -26,18 +26,23 @@ Add this to dependencies:
 
 ```groovy
 dependencies {
-	     implementation 'com.github.ronnieotieno:Ronnie-Image-Picker:0.3.0' //Add latest version
+	     implementation 'com.github.ronnieotieno:Ronnie-Image-Picker:0.4.0' //Add latest version
 	}
 ```
 Example in code, Kotlin:
 
 ```kotlin
-
- //activity
-  val imagePicker = ImagePicker(this)
+  lateinit var imagePicker = ImagePicker
   
-  //fragment
-   val imagePicker = ImagePicker(requireActivity())
+  //Make sure that you initialize it at Oncreate
+   override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+	 //activity
+	 imagePicker = ImagePicker(activity = this)
+	 
+	 //fragment
+        imagePicker = ImagePicker(fragment = this)
+    }
 
     //Camera
             imagePicker.takeFromCamera(object : ImageResult {
@@ -65,12 +70,19 @@ Example in code, Kotlin:
 Example in code,Java:
 
 ```java
-
- //activity
- ImagePicker imagePicker = new ImagePicker(this);
+  ImagePicker imagePicker;
+    
+    //Make sure that you initialize it at Oncreate
+    @Override
+     protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            //activity
+           imagePicker = new ImagePicker(this,null);
  
- //fragment
- ImagePicker imagePicker = new ImagePicker(requireActivity());
+         //fragment
+          imagePicker = new ImagePicker(null, this);
+     }
+
        
        //Gallery
        imagePicker.pickFromStorage(new ImageResult() {
