@@ -10,29 +10,31 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import java.io.File
 
-class ImagePicker(private var activity: AppCompatActivity) : SendImageUri {
+class ImagePicker(
+    private val activity: AppCompatActivity? = null,
+    private val fragment: Fragment? = null
+) : SendImageUri {
 
     private lateinit var takenImageUri: Uri
     private lateinit var imageResult: ImageResult
+    private val context = activity?.applicationContext ?: fragment?.requireContext()!!
 
-    constructor(activity: FragmentActivity) : this(activity as AppCompatActivity) {
-        this.activity = activity
-
-    }
 
     override fun pickFromStorage(imageResult: ImageResult) {
         this.imageResult = imageResult
+
         if (ActivityCompat.shouldShowRequestPermissionRationale(
-                activity,
+                (activity ?: fragment!!.requireActivity()),
                 Manifest.permission.READ_EXTERNAL_STORAGE
             )
         ) {
             showWhyPermissionNeeded(Manifest.permission.READ_EXTERNAL_STORAGE, "Storage")
         } else {
-            storagePermission.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+            storagePermission?.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
         }
 
     }
@@ -40,56 +42,58 @@ class ImagePicker(private var activity: AppCompatActivity) : SendImageUri {
     override fun takeFromCamera(imageResult: ImageResult) {
         this.imageResult = imageResult
         if (ActivityCompat.shouldShowRequestPermissionRationale(
-                activity,
+                (activity ?: fragment!!.requireActivity()),
                 Manifest.permission.CAMERA
             )
         ) {
             showWhyPermissionNeeded(Manifest.permission.CAMERA, "Camera")
         } else {
-            cameraPermission.launch(Manifest.permission.CAMERA)
+            cameraPermission?.launch(Manifest.permission.CAMERA)
         }
 
     }
 
     //Camera permision
     private
-    val cameraPermission =
-        activity.registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
-            when {
-                granted -> {
-                    launchCamera()
-                }
-                else -> imageResult.onFailure("Camera Permission denied")
-
+    val cameraPermission = (activity
+        ?: fragment)?.registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+        when {
+            granted -> {
+                launchCamera()
             }
-        }
+            else -> imageResult.onFailure("Camera Permission denied")
 
-    //Storage permission
-    private val storagePermission =
-        activity.registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
-            when {
-                granted -> {
-                    launchGallery()
-                }
-
-                else -> imageResult.onFailure("Storage Permission denied")
-
-            }
-        }
-
-    //Launch camera
-    private var cameraLauncher: ActivityResultLauncher<Uri?>? = activity.registerForActivityResult(
-        ActivityResultContracts.TakePicture()
-    ) { result ->
-        if (result) {
-            imageResult.onSuccess(takenImageUri)
-        } else {
-            imageResult.onFailure("Camera Launch Failed")
         }
     }
 
+    //Storage permission
+    private val storagePermission = (activity ?: fragment)?.registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        when {
+            granted -> {
+                launchGallery()
+            }
+
+            else -> imageResult.onFailure("Storage Permission denied")
+
+        }
+    }
+
+    //Launch camera
+    private var cameraLauncher: ActivityResultLauncher<Uri?>? =
+        (activity ?: fragment)?.registerForActivityResult(
+            ActivityResultContracts.TakePicture()
+        ) { result ->
+            if (result) {
+                imageResult.onSuccess(takenImageUri)
+            } else {
+                imageResult.onFailure("Camera Launch Failed")
+            }
+        }
+
     //launch gallery
-    private val galleryLauncher = activity.registerForActivityResult(
+    private val galleryLauncher = (activity ?: fragment)?.registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result: ActivityResult ->
         if (result.resultCode == AppCompatActivity.RESULT_OK && result.data != null) {
@@ -106,9 +110,9 @@ class ImagePicker(private var activity: AppCompatActivity) : SendImageUri {
 
     private fun launchCamera() {
         try {
-            val takenImageFile = File(activity.externalCacheDir, "takenImage.jpg")
+            val takenImageFile = File(context.externalCacheDir, "takenImage.jpg")
             takenImageUri = FileProvider.getUriForFile(
-                activity, activity.packageName.plus(".ronnie_image_provider"), takenImageFile
+                context, context.packageName.plus(".ronnie_image_provider"), takenImageFile
             )
             cameraLauncher!!.launch(takenImageUri)
         } catch (exception: Exception) {
@@ -123,22 +127,23 @@ class ImagePicker(private var activity: AppCompatActivity) : SendImageUri {
         intent.type = "image/*"
         intent.action = Intent.ACTION_GET_CONTENT
         Intent.createChooser(intent, "Select Image")
-        galleryLauncher.launch(intent)
+        galleryLauncher?.launch(intent)
     }
 
     private fun showWhyPermissionNeeded(permission: String, name: String) {
-        AlertDialog.Builder(activity)
+        AlertDialog.Builder(context)
             .setMessage("Permission needed. $name permission is required")
             .setPositiveButton(
                 "Okay"
             ) { _, _ ->
                 if (permission == Manifest.permission.CAMERA) {
-                    cameraPermission.launch(permission)
+                    cameraPermission?.launch(permission)
                 } else {
-                    storagePermission.launch(permission)
+                    storagePermission?.launch(permission)
                 }
 
             }.create().show()
 
     }
+
 }
