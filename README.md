@@ -32,7 +32,7 @@ dependencies {
 Example in code, Kotlin:
 
 ```kotlin
-  lateinit var imagePicker = ImagePicker
+  lateinit var imagePicker : ImagePicker
   
   //Make sure that you initialize it at Oncreate
    override fun onCreate(savedInstanceState: Bundle?) {
