@@ -37,12 +37,9 @@ Example in code, Kotlin:
   //Make sure that you initialize it at Oncreate
    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-	 //activity
+
+	 //activity or fragment
 	 imagePicker = ImagePicker(this)
-	 
-	 //fragment
-        imagePicker = ImagePicker(this)
-    }
 
     //Camera
             imagePicker.takeFromCamera(object : ImageResult {
@@ -76,12 +73,9 @@ Example in code,Java:
     @Override
      protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            //activity
+
+            //activity or fragment
            imagePicker = new ImagePicker(this);
- 
-         //fragment
-          imagePicker = new ImagePicker(this);
-     }
 
        
        //Gallery
