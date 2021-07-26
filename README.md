@@ -77,6 +77,7 @@ Example in code,Java:
             //activity or fragment
            imagePicker = new ImagePicker(this);
 
+
        
        //Gallery
        imagePicker.pickFromStorage(new ImageResult() {
