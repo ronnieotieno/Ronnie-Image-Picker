@@ -77,10 +77,10 @@ Example in code,Java:
      protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             //activity
-           imagePicker = new ImagePicker(this,null);
+           imagePicker = new ImagePicker(this);
  
          //fragment
-          imagePicker = new ImagePicker(null, this);
+          imagePicker = new ImagePicker(this);
      }
 
        
