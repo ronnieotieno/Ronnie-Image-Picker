@@ -38,10 +38,10 @@ Example in code, Kotlin:
    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 	 //activity
-	 imagePicker = ImagePicker(activity = this)
+	 imagePicker = ImagePicker(this)
 	 
 	 //fragment
-        imagePicker = ImagePicker(fragment = this)
+        imagePicker = ImagePicker(this)
     }
 
     //Camera
