@@ -14,10 +14,18 @@ import androidx.fragment.app.Fragment
 import java.io.File
 import java.lang.NullPointerException
 
-class ImagePicker(
-    private val activity: AppCompatActivity? = null,
-    private val fragment: Fragment? = null
-) : SendImageUri {
+class ImagePicker : SendImageUri {
+    private var activity: AppCompatActivity? = null
+    private var fragment: Fragment? = null
+
+    constructor(activity: AppCompatActivity)  {
+        this.activity = activity
+    }
+
+    constructor(fragment: Fragment) {
+        this.fragment = fragment
+    }
+
     init {
         if (activity == null && fragment == null) {
             throw NullPointerException("Make sure that either Activity or Fragment isn't empty when initializing ImagePicker")
