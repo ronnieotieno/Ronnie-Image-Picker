@@ -26,7 +26,7 @@ Add this to dependencies:
 
 ```groovy
 dependencies {
-	     implementation 'com.github.ronnieotieno:Ronnie-Image-Picker:0.6.0' //Add latest version
+	     implementation 'com.github.ronnieotieno:Ronnie-Image-Picker:0.7.0' //Add latest version
 	}
 ```
 Example in code, Kotlin:
@@ -42,27 +42,22 @@ Example in code, Kotlin:
 	 imagePicker = ImagePicker(this)
 
     //Camera
-            imagePicker.takeFromCamera(object : ImageResult {
-                override fun onFailure(reason: String) {
-                    Toast.makeText(this, reason, Toast.LENGTH_LONG).show()
-                }
-
-                override fun onSuccess(uri: Uri) {
-                    imageView.setImageURI(uri)
-                }
-            })
+      imagePicker.takeFromCamera { isSuccessful, uri, errorString ->
+          if(isSuccessful){
+              imageView.setImageURI(uri)
+          }else{
+              Toast.makeText(this, errorString, Toast.LENGTH_LONG).show()
+          }
+      }
      
      //Gallery
-            imagePicker.pickFromStorage(object : ImageResult {
-                override fun onFailure(reason: String) {
-                    Toast.makeText(this, reason, Toast.LENGTH_LONG).show()
-                }
-
-                override fun onSuccess(uri: Uri) {
-                    imageView.setImageURI(uri)
-                }
-            })
-        
+      imagePicker.pickFromStorage { isSuccessful, uri, errorString ->
+          if(isSuccessful){
+              imageView.setImageURI(uri)
+          }else{
+              Toast.makeText(this, errorString, Toast.LENGTH_LONG).show()
+          }
+      }
 ```
 Example in code,Java:
 
@@ -76,33 +71,26 @@ Example in code,Java:
 
             //activity or fragment
            imagePicker = new ImagePicker(this);
-
-
+           
        
        //Gallery
-       imagePicker.pickFromStorage(new ImageResult() {
-           @Override
-           public void onSuccess(@NotNull Uri uri) {
-               imageView.setImageURI(uri);
-           }
-
-           @Override
-           public void onFailure(@NotNull String s) {
-
-           }
-       });
-       
+        imagePicker.pickFromStorage((isSuccessful, uri, errorString) -> {
+             if(isSuccessful){
+                imageView.setImageURI(uri);
+             }else{
+                Toast.makeText(this,errorString , Toast.LENGTH_LONG).show();
+            }
+            return null;
+        });
+        
        //Camera
-       imagePicker.takeFromCamera(new ImageResult() {
-           @Override
-           public void onSuccess(@NotNull Uri uri) {
-               imageView.setImageURI(uri);
+        imagePicker.takeFromCamera ((isSuccessful, uri, errorString) -> {
+             if(isSuccessful){
+                imageView.setImageURI(uri);
+             }else{
+                Toast.makeText(this,errorString , Toast.LENGTH_LONG).show();
            }
-
-           @Override
-           public void onFailure(@NotNull String s) {
-
-           }
-       });
+            return null;
+        });
 
 ```
