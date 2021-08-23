@@ -27,7 +27,7 @@ class ImagePicker{
     private var context: Context
 
     private lateinit var takenImageUri: Uri
-    private var callback: ((isSuccessful: Boolean, uri:Uri?, errorString:String?) -> Unit)? = null
+    private var callback: ((imageResult: ImageResult<Uri>)-> Unit)? = null
 
     constructor(activity: AppCompatActivity) {
         this.activity = activity
@@ -49,7 +49,7 @@ class ImagePicker{
                 granted -> {
                     launchCamera()
                 }
-                else -> callback?.invoke(false, null, "Camera Permission denied")
+                else -> callback?.invoke( ImageResult.Failure("Camera Permission denied"))
 
             }
         }
@@ -63,7 +63,7 @@ class ImagePicker{
                     launchGallery()
                 }
 
-                else -> callback?.invoke(false, null,"Storage Permission denied")
+                else ->  callback?.invoke( ImageResult.Failure("Storage Permission denied"))
 
             }
         }
@@ -73,9 +73,9 @@ class ImagePicker{
                 ActivityResultContracts.TakePicture()
             ) { result ->
                 if (result) {
-                    callback?.invoke(true,takenImageUri, null)
+                    callback?.invoke(ImageResult.Success(takenImageUri))
                 } else {
-                    callback?.invoke(false, null, "Camera Launch Failed")
+                    callback?.invoke(ImageResult.Failure( "Camera Launch Failed"))
                 }
             }
 
@@ -86,12 +86,12 @@ class ImagePicker{
             if (result.resultCode == AppCompatActivity.RESULT_OK && result.data != null) {
                 val uri = result.data?.data
                 if (uri != null) {
-                    callback?.invoke(true,uri, null)
+                    callback?.invoke(ImageResult.Success(uri))
                 } else {
-                    callback?.invoke(false, null,"Gallery Launch Failed")
+                    callback?.invoke(ImageResult.Failure("Gallery Launch Failed"))
                 }
             } else {
-                callback?.invoke(false, null,"Gallery Launch Failed")
+                callback?.invoke(ImageResult.Failure("Gallery Launch Failed"))
             }
         }
     }
@@ -104,7 +104,7 @@ class ImagePicker{
             )
             cameraLauncher!!.launch(takenImageUri)
         } catch (exception: Exception) {
-            callback?.invoke(false, null,"Camera Launch Failed")
+            callback?.invoke(ImageResult.Failure("Camera Launch Failed"))
         }
     }
 
@@ -116,7 +116,7 @@ class ImagePicker{
         galleryLauncher?.launch(intent)
     }
 
-    fun pickFromStorage(callback: ((isSuccessful: Boolean, uri:Uri?, errorString:String?) -> Unit)) {
+    fun pickFromStorage(callback: ((imageResult: ImageResult<Uri>) -> Unit)) {
         this.callback = callback
         if (ActivityCompat.shouldShowRequestPermissionRationale(
                 (activity ?: fragment!!.requireActivity()),
@@ -129,7 +129,7 @@ class ImagePicker{
         }
     }
 
-    fun takeFromCamera(callback: ((isSuccessful: Boolean, uri:Uri?, errorString:String?) -> Unit)) {
+    fun takeFromCamera(callback: ((imageResult: ImageResult<Uri>) -> Unit)) {
         this.callback = callback
         if (ActivityCompat.shouldShowRequestPermissionRationale(
                 (activity ?: fragment!!.requireActivity()),
