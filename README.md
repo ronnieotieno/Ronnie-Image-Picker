@@ -42,21 +42,33 @@ Example in code, Kotlin:
 	 imagePicker = ImagePicker(this)
 
     //Camera
-      imagePicker.takeFromCamera { isSuccessful, uri, errorString ->
-          if(isSuccessful){
-              imageView.setImageURI(uri)
-          }else{
-              Toast.makeText(this, errorString, Toast.LENGTH_LONG).show()
+      imagePicker.takeFromCamera { imageResult ->
+          when (imageResult) {
+              is ImageResult.Success -> {
+                  val uri = imageResult.value
+                  imageView.setImageURI(uri)
+              }
+              is ImageResult.Failure -> {
+                  val errorString = imageResult.errorString
+                  Toast.makeText(this@MainActivity, errorString, Toast.LENGTH_LONG).show()
+              }
           }
+
       }
      
      //Gallery
-      imagePicker.pickFromStorage { isSuccessful, uri, errorString ->
-          if(isSuccessful){
-              imageView.setImageURI(uri)
-          }else{
-              Toast.makeText(this, errorString, Toast.LENGTH_LONG).show()
+      imagePicker.pickFromStorage { imageResult ->
+          when (imageResult) {
+              is ImageResult.Success -> {
+                  val uri = imageResult.value
+                  imageView.setImageURI(uri)
+              }
+              is ImageResult.Failure -> {
+                  val errorString = imageResult.errorString
+                  Toast.makeText(this@MainActivity, errorString, Toast.LENGTH_LONG).show()
+              }
           }
+
       }
 ```
 Example in code,Java:
@@ -74,23 +86,27 @@ Example in code,Java:
            
        
        //Gallery
-        imagePicker.pickFromStorage((isSuccessful, uri, errorString) -> {
-             if(isSuccessful){
-                imageView.setImageURI(uri);
-             }else{
-                Toast.makeText(this,errorString , Toast.LENGTH_LONG).show();
-            }
-            return null;
-        });
+         imagePicker.pickFromStorage(imageResult -> {
+         if(imageResult instanceof ImageResult.Success){
+             Uri uri = ((ImageResult.Success<Uri>) imageResult).getValue();
+             imageView.setImageURI(uri);
+         }else{
+             String errorString = ((ImageResult.Failure) imageResult).getErrorString();
+             Toast.makeText(MainActivity2.this, errorString, Toast.LENGTH_LONG).show();
+         }
+         return null;
+     }));
         
        //Camera
-        imagePicker.takeFromCamera ((isSuccessful, uri, errorString) -> {
-             if(isSuccessful){
-                imageView.setImageURI(uri);
-             }else{
-                Toast.makeText(this,errorString , Toast.LENGTH_LONG).show();
-           }
-            return null;
-        });
+         imagePicker.takeFromCamera(imageResult -> {
+         if(imageResult instanceof ImageResult.Success){
+             Uri uri = ((ImageResult.Success<Uri>) imageResult).getValue();
+             imageView.setImageURI(uri);
+         }else{
+             String errorString = ((ImageResult.Failure) imageResult).getErrorString();
+             Toast.makeText(MainActivity2.this, errorString, Toast.LENGTH_LONG).show();
+         }
+         return null;
+     }));
 
 ```
