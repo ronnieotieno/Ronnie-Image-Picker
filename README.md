@@ -12,7 +12,7 @@ Build System : [Gradle](https://gradle.org/)
 
 You don't need to declare the permissions in the manifests.
 
-Add this in your root build.gradle at the end of repositories:
+Add this in your root build.gradle or settings.gradle if in Arctic Fox at the end of repositories:
 
 ```groovy
 allprojects {
