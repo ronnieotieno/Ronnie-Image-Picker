@@ -26,7 +26,7 @@ Add this to dependencies:
 
 ```groovy
 dependencies {
-	     implementation 'com.github.ronnieotieno:Ronnie-Image-Picker:0.8.0' //Add latest version
+	     implementation 'com.github.ronnieotieno:Ronnie-Image-Picker:0.9.0' //Add latest version
 	}
 ```
 Example in code, Kotlin:
