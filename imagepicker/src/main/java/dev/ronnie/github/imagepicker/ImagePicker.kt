@@ -1,9 +1,12 @@
 package dev.ronnie.github.imagepicker
 
 import android.Manifest
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -14,17 +17,18 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.io.File
 
-class ImagePicker{
+
+class ImagePicker {
     private var galleryLauncher: ActivityResultLauncher<Intent>? = null
     private var cameraLauncher: ActivityResultLauncher<Uri>? = null
-    private var storagePermission: ActivityResultLauncher<String>?  = null
+    private var storagePermission: ActivityResultLauncher<String>? = null
     private var cameraPermission: ActivityResultLauncher<String>? = null
     private var activity: AppCompatActivity? = null
     private var fragment: Fragment? = null
     private var context: Context
 
     private lateinit var takenImageUri: Uri
-    private var callback: ((imageResult: ImageResult<Uri>)-> Unit)? = null
+    private var callback: ((imageResult: ImageResult<Uri>) -> Unit)? = null
 
     constructor(activity: AppCompatActivity) {
         this.activity = activity
@@ -38,15 +42,15 @@ class ImagePicker{
         registerActivityForResults()
     }
 
-    private fun  registerActivityForResults(){
+    private fun registerActivityForResults() {
         //Camera permission
-       cameraPermission = (activity
+        cameraPermission = (activity
             ?: fragment)?.registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
             when {
                 granted -> {
                     launchCamera()
                 }
-                else -> callback?.invoke( ImageResult.Failure("Camera Permission denied"))
+                else -> callback?.invoke(ImageResult.Failure("Camera Permission denied"))
 
             }
         }
@@ -60,19 +64,19 @@ class ImagePicker{
                     launchGallery()
                 }
 
-                else ->  callback?.invoke( ImageResult.Failure("Storage Permission denied"))
+                else -> callback?.invoke(ImageResult.Failure("Storage Permission denied"))
 
             }
         }
         //Launch camera
-       cameraLauncher =
+        cameraLauncher =
             (activity ?: fragment)?.registerForActivityResult(
                 ActivityResultContracts.TakePicture()
             ) { result ->
                 if (result) {
                     callback?.invoke(ImageResult.Success(takenImageUri))
                 } else {
-                    callback?.invoke(ImageResult.Failure( "Camera Launch Failed"))
+                    callback?.invoke(ImageResult.Failure("Camera Launch Failed"))
                 }
             }
 
@@ -95,7 +99,8 @@ class ImagePicker{
 
     private fun launchCamera() {
         try {
-            val takenImageFile = File(context.externalCacheDir, "takenImage${(1..1000).random()}.jpg")
+            val takenImageFile =
+                File(context.externalCacheDir, "takenImage${(1..1000).random()}.jpg")
             takenImageUri = FileProvider.getUriForFile(
                 context, context.packageName.plus(".ronnie_image_provider"), takenImageFile
             )
@@ -136,6 +141,27 @@ class ImagePicker{
             showWhyPermissionNeeded(Manifest.permission.CAMERA, "Camera")
         } else {
             cameraPermission?.launch(Manifest.permission.CAMERA)
+        }
+    }
+
+    fun selectSource(callback: ((imageResult: ImageResult<Uri>) -> Unit)) {
+        val dialog = Dialog(activity ?: fragment!!.requireContext())
+        dialog.setContentView(R.layout.chooser_dialog)
+        dialog.show()
+        val storageOption: ImageView = dialog.findViewById(R.id.storage)
+        val cameraOption: ImageView = dialog.findViewById(R.id.camera)
+        val cancel: TextView = dialog.findViewById(R.id.cancel)
+
+        cancel.setOnClickListener {
+            dialog.dismiss()
+        }
+        storageOption.setOnClickListener {
+            pickFromStorage(callback)
+            dialog.dismiss()
+        }
+        cameraOption.setOnClickListener {
+            takeFromCamera(callback)
+            dialog.dismiss()
         }
     }
 
