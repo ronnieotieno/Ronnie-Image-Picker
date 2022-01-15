@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ImagePickerLib">
+        <activity android:name=".Activity2"/>
         <activity android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

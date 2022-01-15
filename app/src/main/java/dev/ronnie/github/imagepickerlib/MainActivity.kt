@@ -27,9 +27,9 @@ import dev.ronnie.github.imagepicker.ImageResult
 class MainActivity : AppCompatActivity() {
     private lateinit var openGalleryBtn: Button
     private lateinit var openCameraBtn: Button
+    private lateinit var openSelectionButton: Button
     private lateinit var imageView: ImageView
     private val maxHeightWidth = 1080
-    private var bitmap: Bitmap? = null
     private lateinit var imagePicker: ImagePicker
     private val _bitmapLivedata = MutableLiveData<Bitmap>()
     private val bitmapLiveData: LiveData<Bitmap> get() = _bitmapLivedata
@@ -40,46 +40,46 @@ class MainActivity : AppCompatActivity() {
         imageView = findViewById(R.id.imageView)
         openCameraBtn = findViewById(R.id.openCamera)
         openGalleryBtn = findViewById(R.id.openStorage)
+        openSelectionButton = findViewById(R.id.openSelection)
         imagePicker = ImagePicker(this)
 
         bitmapLiveData.observe(this, { bitmap ->
-            this.bitmap = bitmap
-            imageView.setImageBitmap(this.bitmap)
+            imageView.setImageBitmap(bitmap)
         })
 
-        openCameraBtn.setOnClickListener { takeFromCamera() }
-        openGalleryBtn.setOnClickListener { pickFromStorage() }
-    }
-
-    private fun takeFromCamera() {
-        imagePicker.takeFromCamera { imageResult ->
-            when (imageResult) {
-                is ImageResult.Success -> {
-                    val uri = imageResult.value
-                    getLargeBitmap(uri)
-                }
-                is ImageResult.Failure -> {
-                    val errorString = imageResult.errorString
-                    Toast.makeText(this@MainActivity, errorString, Toast.LENGTH_LONG).show()
-                }
+        openCameraBtn.setOnClickListener {
+            imagePicker.takeFromCamera { imageResult ->
+                imageCallBack(
+                    imageResult
+                )
             }
-
+        }
+        openGalleryBtn.setOnClickListener {
+            imagePicker.pickFromStorage { imageResult ->
+                imageCallBack(
+                    imageResult
+                )
+            }
+        }
+        openSelectionButton.setOnClickListener {
+            imagePicker.selectSource { imageResult ->
+                imageCallBack(
+                    imageResult
+                )
+            }
         }
     }
 
-    private fun pickFromStorage() {
-        imagePicker.pickFromStorage { imageResult ->
-            when (imageResult) {
-                is ImageResult.Success -> {
-                    val uri = imageResult.value
-                    getLargeBitmap(uri)
-                }
-                is ImageResult.Failure -> {
-                    val errorString = imageResult.errorString
-                    Toast.makeText(this@MainActivity, errorString, Toast.LENGTH_LONG).show()
-                }
+    private fun imageCallBack(imageResult: ImageResult<Uri>) {
+        when (imageResult) {
+            is ImageResult.Success -> {
+                val uri = imageResult.value
+                getLargeBitmap(uri)
             }
-
+            is ImageResult.Failure -> {
+                val errorString = imageResult.errorString
+                Toast.makeText(this@MainActivity, errorString, Toast.LENGTH_LONG).show()
+            }
         }
     }
 
