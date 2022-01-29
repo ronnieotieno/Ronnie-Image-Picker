@@ -5,13 +5,12 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.widget.FrameLayout
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
@@ -149,8 +148,8 @@ class ImagePicker {
         val dialog = Dialog(activity ?: fragment!!.requireContext())
         dialog.setContentView(R.layout.chooser_dialog)
         dialog.show()
-        val storageOption: FrameLayout = dialog.findViewById(R.id.selectGallery)
-        val cameraOption: FrameLayout = dialog.findViewById(R.id.selectCamera)
+        val storageOption: ConstraintLayout = dialog.findViewById(R.id.selectGallery)
+        val cameraOption: ConstraintLayout = dialog.findViewById(R.id.selectCamera)
         val cancel: TextView = dialog.findViewById(R.id.cancel)
 
         cancel.setOnClickListener {
