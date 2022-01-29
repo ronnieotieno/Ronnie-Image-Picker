@@ -12,67 +12,94 @@
         android:id="@+id/choose"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Choose From?"
+        android:text="@string/choose_from_text"
         android:textSize="17sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/camera"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="10dp"
+    <FrameLayout
+        android:id="@+id/selectCamera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="?selectableItemBackground"
-        android:src="@drawable/ic_camera"
         app:layout_constraintStart_toStartOf="@+id/choose"
-        app:layout_constraintTop_toBottomOf="@id/choose" />
+        app:layout_constraintTop_toBottomOf="@id/choose">
 
-    <TextView
-        android:id="@+id/cameraLabel"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/camera"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="10dp"
+                android:contentDescription="@string/camera_icon_desc"
+                android:src="@drawable/ic_camera"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/cameraLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="b"
+                android:text="Camera"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/camera"
+                app:layout_constraintStart_toStartOf="@+id/camera"
+                app:layout_constraintTop_toBottomOf="@+id/camera" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+
+
+    <FrameLayout
+        android:id="@+id/chooseGallery"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Camera"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/camera"
-        app:layout_constraintStart_toEndOf="@+id/camera"
-        app:layout_constraintTop_toTopOf="@+id/camera" />
-
-
-    <ImageView
-        android:id="@+id/storage"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
         android:background="?selectableItemBackground"
-        android:src="@drawable/ic_gallery"
-        app:layout_constraintStart_toStartOf="@+id/camera"
-        app:layout_constraintTop_toBottomOf="@+id/camera" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/choose">
 
-    <TextView
-        android:id="@+id/storageLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Gallery"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/storage"
-        app:layout_constraintStart_toEndOf="@+id/storage"
-        app:layout_constraintTop_toTopOf="@+id/storage" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/storage"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/ic_gallery"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/galleryLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gallery"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/storage"
+                app:layout_constraintStart_toStartOf="@+id/storage"
+                app:layout_constraintTop_toBottomOf="@+id/storage" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
 
     <TextView
         android:id="@+id/cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
         android:background="?selectableItemBackground"
         android:padding="10dp"
         android:text="Cancel"
         android:textColor="?colorPrimary"
         android:textSize="17sp"
         android:textStyle="bold"
-        android:layout_marginTop="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/camera" />
+        app:layout_constraintTop_toBottomOf="@+id/selectCamera" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
